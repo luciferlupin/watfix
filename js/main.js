@@ -81,6 +81,117 @@ document.addEventListener('DOMContentLoaded', function() {
             });
         }
         
+        // Handle WhatsApp button click
+        const whatsappBtn = inquiryForm.querySelector('.whatsapp-btn');
+        
+        if (whatsappBtn) {
+            whatsappBtn.addEventListener('click', function(e) {
+                e.preventDefault();
+                
+                // Reset error messages
+                const errorElements = document.querySelectorAll('.error-message');
+                errorElements.forEach(element => {
+                    element.textContent = '';
+                });
+                
+                // Get form values
+                const name = document.getElementById('name').value.trim();
+                const company = document.getElementById('company').value.trim();
+                const email = document.getElementById('email').value.trim();
+                const phone = document.getElementById('phone').value.trim();
+                const product = document.getElementById('product').value;
+                const message = document.getElementById('message').value.trim();
+                let otherProduct = '';
+                
+                if (product === 'Other') {
+                    otherProduct = document.getElementById('otherProduct').value.trim();
+                }
+                
+                // Validate form
+                let isValid = true;
+                
+                if (name === '') {
+                    document.getElementById('name-error').textContent = 'Please enter your name';
+                    isValid = false;
+                }
+                
+                if (company === '') {
+                    document.getElementById('company-error').textContent = 'Please enter your company name';
+                    isValid = false;
+                }
+                
+                if (email === '') {
+                    document.getElementById('email-error').textContent = 'Please enter your email';
+                    isValid = false;
+                } else if (!isValidEmail(email)) {
+                    document.getElementById('email-error').textContent = 'Please enter a valid email';
+                    isValid = false;
+                }
+                
+                if (phone === '') {
+                    document.getElementById('phone-error').textContent = 'Please enter your phone number';
+                    isValid = false;
+                }
+                
+                if (product === '') {
+                    document.getElementById('product-error').textContent = 'Please select a product';
+                    isValid = false;
+                }
+                
+                if (product === 'Other' && otherProduct === '') {
+                    document.getElementById('otherProduct-error').textContent = 'Please provide product details';
+                    isValid = false;
+                }
+                
+                if (message === '') {
+                    document.getElementById('message-error').textContent = 'Please enter your message';
+                    isValid = false;
+                }
+                
+                // If form is valid, redirect to WhatsApp
+                if (isValid) {
+                    // Get additional form values
+                    const quantity = document.getElementById('quantity').value.trim();
+                    const frequency = document.getElementById('frequency').value;
+                    
+                    // Format the product name
+                    const productName = product === 'Other' ? otherProduct : product;
+                    
+                    // Create WhatsApp message text with all form fields - using encodeURIComponent for proper URL encoding
+                    const messageText = `*New Inquiry from WatFix Chemicals Website*
+
+*Name:* ${name}
+*Company:* ${company}
+*Email:* ${email}
+*Phone:* ${phone}
+*Product Interest:* ${productName}
+*Quantity:* ${quantity || 'Not specified'}
+*Purchase Frequency:* ${frequency || 'Not specified'}
+
+*Additional Requirements:*
+${message}`;
+
+                    // Properly encode the message for URL
+                    const encodedText = encodeURIComponent(messageText);
+                    
+                    // Create WhatsApp URL with the phone number and message
+                    const whatsappUrl = `https://wa.me/918076419279?text=${encodedText}`;
+                    
+                    // Log the URL for debugging
+                    console.log("WhatsApp URL:", whatsappUrl);
+                    
+                    // Redirect to WhatsApp immediately
+                    window.location.href = whatsappUrl;
+                } else {
+                    // Scroll to the first error
+                    const firstError = document.querySelector('.error-message:not(:empty)');
+                    if (firstError) {
+                        firstError.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                    }
+                }
+            });
+        }
+        
         // Pre-fill product dropdown if coming from a product section
         const productLinks = document.querySelectorAll('.product-card .learn-more');
         
@@ -103,110 +214,6 @@ document.addEventListener('DOMContentLoaded', function() {
                     }
                 }
             });
-        });
-
-        // Form validation and submission
-        inquiryForm.addEventListener('submit', function(e) {
-            e.preventDefault();
-            
-            // Reset error messages
-            const errorElements = document.querySelectorAll('.error-message');
-            errorElements.forEach(element => {
-                element.textContent = '';
-            });
-            
-            // Get form values
-            const name = document.getElementById('name').value.trim();
-            const company = document.getElementById('company').value.trim();
-            const email = document.getElementById('email').value.trim();
-            const phone = document.getElementById('phone').value.trim();
-            const product = document.getElementById('product').value;
-            const message = document.getElementById('message').value.trim();
-            let otherProduct = '';
-            
-            if (product === 'Other') {
-                otherProduct = document.getElementById('otherProduct').value.trim();
-            }
-            
-            // Validate form
-            let isValid = true;
-            
-            if (name === '') {
-                document.getElementById('name-error').textContent = 'Please enter your name';
-                isValid = false;
-            }
-            
-            if (company === '') {
-                document.getElementById('company-error').textContent = 'Please enter your company name';
-                isValid = false;
-            }
-            
-            if (email === '') {
-                document.getElementById('email-error').textContent = 'Please enter your email';
-                isValid = false;
-            } else if (!isValidEmail(email)) {
-                document.getElementById('email-error').textContent = 'Please enter a valid email';
-                isValid = false;
-            }
-            
-            if (phone === '') {
-                document.getElementById('phone-error').textContent = 'Please enter your phone number';
-                isValid = false;
-            }
-            
-            if (product === '') {
-                document.getElementById('product-error').textContent = 'Please select a product';
-                isValid = false;
-            }
-            
-            if (product === 'Other' && otherProduct === '') {
-                document.getElementById('otherProduct-error').textContent = 'Please provide product details';
-                isValid = false;
-            }
-            
-            if (message === '') {
-                document.getElementById('message-error').textContent = 'Please enter your message';
-                isValid = false;
-            }
-            
-            // If form is valid, redirect to WhatsApp
-            if (isValid) {
-                // Get additional form values
-                const quantity = document.getElementById('quantity').value.trim();
-                const frequency = document.getElementById('frequency').value;
-                
-                // Format the product name
-                const productName = product === 'Other' ? otherProduct : product;
-                
-                // Create WhatsApp message text with all form fields - using encodeURIComponent for proper URL encoding
-                const messageText = `*New Inquiry from WatFix Chemicals Website*
-
-*Name:* ${name}
-*Company:* ${company}
-*Email:* ${email}
-*Phone:* ${phone}
-*Product Interest:* ${productName}
-*Quantity:* ${quantity || 'Not specified'}
-*Purchase Frequency:* ${frequency || 'Not specified'}
-
-*Additional Requirements:*
-${message}`;
-
-                // Properly encode the message for URL
-                const encodedText = encodeURIComponent(messageText);
-                
-                // Create WhatsApp URL with the phone number and message
-                const whatsappUrl = `https://wa.me/918076419279?text=${encodedText}`;
-                
-                // Log the URL for debugging
-                console.log("WhatsApp URL:", whatsappUrl);
-                
-                // Redirect to WhatsApp immediately
-                window.location.href = whatsappUrl;
-                
-                // Prevent form from submitting normally
-                return false;
-            }
         });
     }
     
