@@ -180,14 +180,36 @@ document.addEventListener('DOMContentLoaded', function() {
                 // Format the product name
                 const productName = product === 'Other' ? otherProduct : product;
                 
-                // Create WhatsApp message text with all form fields
-                const whatsappText = `*New Inquiry from WatFix Chemicals Website*%0A%0A*Name:* ${name}%0A*Company:* ${company}%0A*Email:* ${email}%0A*Phone:* ${phone}%0A*Product Interest:* ${productName}%0A*Quantity:* ${quantity || 'Not specified'}%0A*Purchase Frequency:* ${frequency || 'Not specified'}%0A*Technical Specs Requested:* ${technical}%0A*Newsletter Subscription:* ${newsletter}%0A%0A*Additional Requirements:*%0A${message}`;
+                // Create WhatsApp message text with all form fields - using encodeURIComponent for proper URL encoding
+                const messageText = `*New Inquiry from WatFix Chemicals Website*
+
+*Name:* ${name}
+*Company:* ${company}
+*Email:* ${email}
+*Phone:* ${phone}
+*Product Interest:* ${productName}
+*Quantity:* ${quantity || 'Not specified'}
+*Purchase Frequency:* ${frequency || 'Not specified'}
+*Technical Specs Requested:* ${technical}
+*Newsletter Subscription:* ${newsletter}
+
+*Additional Requirements:*
+${message}`;
+
+                // Properly encode the message for URL
+                const encodedText = encodeURIComponent(messageText);
                 
                 // Create WhatsApp URL with the phone number and message
-                const whatsappUrl = `https://wa.me/918076419279?text=${whatsappText}`;
+                const whatsappUrl = `https://wa.me/918076419279?text=${encodedText}`;
+                
+                // Log the URL for debugging
+                console.log("WhatsApp URL:", whatsappUrl);
                 
                 // Redirect to WhatsApp immediately
-                window.open(whatsappUrl, '_blank');
+                window.location.href = whatsappUrl;
+                
+                // Prevent form from submitting normally
+                return false;
             }
         });
     }
