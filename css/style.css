@@ -796,14 +796,14 @@ input:focus:invalid, select:focus:invalid, textarea:focus:invalid {
     }
 }
 
-/* WhatsApp Floating Button */
+/* WhatsApp Floating Button Optimization */
 .whatsapp-float {
     position: fixed;
     width: 60px;
     height: 60px;
     bottom: 40px;
     left: 40px;
-    background-color: #25d366;
+    background-color: #25D366;
     color: #FFF;
     border-radius: 50px;
     text-align: center;
@@ -813,17 +813,143 @@ input:focus:invalid, select:focus:invalid, textarea:focus:invalid {
     display: flex;
     align-items: center;
     justify-content: center;
-    transition: all 0.3s;
+    text-decoration: none;
+    transition: all 0.3s ease;
+    -webkit-tap-highlight-color: transparent;
+    -webkit-touch-callout: none;
+    -webkit-user-select: none;
+    user-select: none;
+    will-change: transform;
 }
 
-.whatsapp-float:hover {
-    background-color: #128C7E;
-    color: #FFF;
-    transform: scale(1.1);
+.whatsapp-float:active {
+    transform: scale(0.95);
 }
 
-.whatsapp-float i {
-    margin-top: 0;
+/* Platform-specific optimizations */
+@media (hover: hover) {
+    .whatsapp-float:hover {
+        transform: scale(1.05);
+        box-shadow: 3px 3px 5px #888;
+    }
+}
+
+/* iOS-specific */
+@supports (-webkit-touch-callout: none) {
+    .whatsapp-float {
+        /* Prevent iOS Safari long-press menu */
+        -webkit-touch-callout: none;
+    }
+}
+
+/* Android-specific */
+.android-device .whatsapp-float {
+    /* Slightly larger touch area for Android */
+    width: 65px;
+    height: 65px;
+}
+
+/* Mobile responsiveness */
+@media (max-width: 768px) {
+    .whatsapp-float {
+        width: 55px;
+        height: 55px;
+        bottom: 20px;
+        left: 20px;
+        font-size: 25px;
+    }
+}
+
+/* Active state for touch feedback */
+.active-touch {
+    background-color: rgba(0,0,0,0.1);
+    transform: scale(0.95);
+}
+
+/* Cross-Platform Button Optimization */
+button, 
+.btn, 
+.learn-more,
+.modal-cta,
+.whatsapp-btn,
+.whatsapp-float {
+    cursor: pointer;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+    border: none;
+    outline: none;
+    -webkit-tap-highlight-color: rgba(0,0,0,0);
+    touch-action: manipulation;
+}
+
+/* Improved touch target sizes for mobile */
+@media (max-width: 768px) {
+    button, 
+    .btn, 
+    .learn-more,
+    .modal-cta,
+    .whatsapp-btn,
+    .nav-links a,
+    .footer-links a,
+    .footer-products a,
+    .social-icons a,
+    .modal-close,
+    input[type="submit"] {
+        min-height: 44px;
+        min-width: 44px;
+        padding: 12px 20px;
+        margin: 8px 0;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+    }
+    
+    .hamburger span {
+        height: 3px;
+    }
+    
+    .whatsapp-float {
+        width: 60px;
+        height: 60px;
+        bottom: 30px;
+        left: 30px;
+    }
+    
+    /* Add extra padding to form elements */
+    input, 
+    select, 
+    textarea {
+        padding: 12px;
+        margin-bottom: 15px;
+    }
+    
+    /* Improve form labels */
+    label {
+        display: block;
+        margin-bottom: 8px;
+        font-weight: 500;
+    }
+}
+
+/* iOS-specific fixes */
+@supports (-webkit-touch-callout: none) {
+    /* iOS-specific styles */
+    input, 
+    select, 
+    textarea, 
+    button {
+        font-size: 16px; /* Prevents iOS zoom on focus */
+    }
+    
+    .modal-body {
+        -webkit-overflow-scrolling: touch;
+    }
+    
+    /* Fix for iOS momentum scrolling */
+    body, .modal-body {
+        -webkit-overflow-scrolling: touch;
+    }
 }
 
 /* Footer */

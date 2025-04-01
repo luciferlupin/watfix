@@ -223,24 +223,38 @@ ${message}`;
         return emailRegex.test(email);
     }
 
-    // Modal functionality
+    // Enhanced modal functionality for cross-platform compatibility
     const modalContainer = document.getElementById('modalContainer');
     const modalOverlay = document.querySelector('.modal-overlay');
     const modals = document.querySelectorAll('.modal');
     const closeButtons = document.querySelectorAll('.modal-close');
     const productLinks = document.querySelectorAll('.learn-more[href^="#modal-"]');
     
-    // Function to open modal
+    // Function to open modal with platform-specific optimizations
     function openModal(modalId) {
-        console.log("Opening modal:", modalId); // Debug log
+        console.log("Opening modal:", modalId);
+        
+        // Platform detection
+        const isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent) && !window.MSStream;
+        const isAndroid = /Android/.test(navigator.userAgent);
+        
+        // Store scroll position
+        const scrollY = window.scrollY;
+        
+        // Add active class to container
         modalContainer.classList.add('active');
         
-        // Store the current scroll position
-        const scrollY = window.scrollY;
+        // Platform-specific body handling
         document.body.style.top = `-${scrollY}px`;
         document.body.style.overflow = 'hidden';
         document.body.style.position = 'fixed';
         document.body.style.width = '100%';
+        
+        // Additional iOS fixes
+        if (isIOS) {
+            document.body.style.height = '100%';
+            document.body.style.touchAction = 'none';
+        }
         
         // Hide all modals first
         modals.forEach(modal => {
@@ -251,13 +265,34 @@ ${message}`;
         const modal = document.getElementById(modalId);
         if (modal) {
             modal.classList.add('active');
+            
+            // Focus management for accessibility
+            setTimeout(() => {
+                const closeButton = modal.querySelector('.modal-close');
+                if (closeButton) {
+                    closeButton.focus();
+                }
+            }, 100);
+            
+            // Prevent background interaction
+            modal.setAttribute('aria-hidden', 'false');
+            document.querySelectorAll('body > *:not(#modalContainer)').forEach(element => {
+                if (element.getAttribute('aria-hidden') !== 'true') {
+                    element.setAttribute('aria-hidden', 'true');
+                    element.setAttribute('data-modal-hidden', 'true');
+                }
+            });
         } else {
-            console.error("Modal not found:", modalId); // Debug log
+            console.error("Modal not found:", modalId);
         }
     }
     
-    // Function to close all modals
+    // Function to close all modals with platform-specific cleanup
     function closeModals() {
+        // Platform detection
+        const isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent) && !window.MSStream;
+        
+        // Remove active class from container
         modalContainer.classList.remove('active');
         
         // Restore scroll position
@@ -266,10 +301,31 @@ ${message}`;
         document.body.style.position = '';
         document.body.style.width = '';
         document.body.style.top = '';
-        window.scrollTo(0, scrollY);
         
+        // Additional iOS cleanup
+        if (isIOS) {
+            document.body.style.height = '';
+            document.body.style.touchAction = '';
+        }
+        
+        // Smooth scroll restoration
+        setTimeout(() => {
+            window.scrollTo({
+                top: scrollY,
+                behavior: 'auto'
+            });
+        }, 0);
+        
+        // Hide all modals
         modals.forEach(modal => {
             modal.classList.remove('active');
+            modal.setAttribute('aria-hidden', 'true');
+        });
+        
+        // Restore accessibility attributes
+        document.querySelectorAll('[data-modal-hidden="true"]').forEach(element => {
+            element.removeAttribute('aria-hidden');
+            element.removeAttribute('data-modal-hidden');
         });
     }
     
@@ -279,12 +335,12 @@ ${message}`;
             link.addEventListener('click', function(e) {
                 e.preventDefault();
                 const modalId = this.getAttribute('href').substring(1); // Remove the # from href
-                console.log("Link clicked for modal:", modalId); // Debug log
+                console.log("Link clicked for modal:", modalId);
                 openModal(modalId);
             });
         });
     } else {
-        console.error("No product links found with class 'learn-more'"); // Debug log
+        console.error("No product links found with class 'learn-more'");
     }
     
     // Event listener for close buttons
@@ -343,6 +399,97 @@ ${message}`;
             }, 800);
         });
     });
+
+    // Cross-platform optimizations
+    // Fix for iOS hover states
+    document.addEventListener('touchstart', function() {}, {passive: true});
+    
+    // Detect platform for specific optimizations
+    const isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent) && !window.MSStream;
+    const isAndroid = /Android/.test(navigator.userAgent);
+    const isMobile = isIOS || isAndroid || window.innerWidth < 768;
+    
+    // Apply platform-specific classes to body
+    if (isIOS) document.body.classList.add('ios-device');
+    if (isAndroid) document.body.classList.add('android-device');
+    if (isMobile) document.body.classList.add('mobile-device');
+    
+    // Optimize all external links
+    const externalLinks = document.querySelectorAll('a[href^="http"]');
+    externalLinks.forEach(link => {
+        // Open external links in new tab
+        if (!link.getAttribute('href').includes(window.location.hostname)) {
+            link.setAttribute('target', '_blank');
+            link.setAttribute('rel', 'noopener noreferrer');
+        }
+        
+        // Add touch feedback for mobile
+        if (isMobile) {
+            link.addEventListener('touchstart', function() {
+                this.classList.add('active-touch');
+            }, {passive: true});
+            
+            link.addEventListener('touchend', function() {
+                this.classList.remove('active-touch');
+            }, {passive: true});
+        }
+    });
+    
+    // Fix for double-tap issue on iOS
+    if (isIOS) {
+        const clickableElements = document.querySelectorAll('button, .btn, .learn-more, a');
+        clickableElements.forEach(element => {
+            element.addEventListener('touchend', function(e) {
+                e.preventDefault();
+                // Small delay to prevent double actions
+                setTimeout(() => {
+                    if (element.href) {
+                        if (element.getAttribute('target') === '_blank') {
+                            window.open(element.href, '_blank');
+                        } else {
+                            window.location.href = element.href;
+                        }
+                    } else if (typeof element.click === 'function') {
+                        element.click();
+                    }
+                }, 10);
+            }, {passive: false});
+        });
+    }
+    
+    // Optimize form elements for mobile
+    if (isMobile) {
+        const formElements = document.querySelectorAll('input, select, textarea');
+        formElements.forEach(element => {
+            // Prevent zoom on iOS
+            if (isIOS && (element.type === 'text' || element.type === 'email' || element.type === 'tel' || element.tagName === 'TEXTAREA')) {
+                element.style.fontSize = '16px';
+            }
+            
+            // Add better focus handling
+            element.addEventListener('focus', function() {
+                this.parentElement.classList.add('input-focused');
+            });
+            
+            element.addEventListener('blur', function() {
+                this.parentElement.classList.remove('input-focused');
+            });
+        });
+    }
+    
+    // Fix for sticky hover effects on mobile
+    if (isMobile) {
+        const styleElement = document.createElement('style');
+        styleElement.innerHTML = `
+            @media (hover: none) {
+                .btn:hover, .learn-more:hover, a:hover {
+                    opacity: 1;
+                    transform: none;
+                }
+            }
+        `;
+        document.head.appendChild(styleElement);
+    }
 
     // Add error class styling
     const style = document.createElement('style');
