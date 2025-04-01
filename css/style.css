@@ -125,6 +125,13 @@ header .container {
     color: var(--secondary-color);
 }
 
+/* Logo Styling */
+.logo img {
+    max-width: 100%;
+    height: auto;
+    display: block;
+}
+
 .nav-links {
     display: flex;
     list-style: none;
@@ -792,6 +799,12 @@ footer {
 
 .footer-logo span {
     color: var(--accent-color);
+}
+
+.footer-logo img {
+    max-width: 150px;
+    height: auto;
+    margin-bottom: 15px;
 }
 
 .footer-links h3,
