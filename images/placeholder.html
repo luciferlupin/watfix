@@ -1,0 +1,217 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Image Placeholder Generator</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 20px;
+            background: linear-gradient(135deg, #0056b3, #00a0e3);
+            color: white;
+            text-align: center;
+        }
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+        .placeholder {
+            margin: 20px 0;
+            background: rgba(255, 255, 255, 0.1);
+            padding: 20px;
+            border-radius: 10px;
+        }
+        canvas {
+            max-width: 100%;
+            border-radius: 5px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+        }
+        h1 {
+            margin-bottom: 30px;
+        }
+        .instructions {
+            margin: 30px 0;
+            background: rgba(255, 255, 255, 0.2);
+            padding: 15px;
+            border-radius: 5px;
+            font-size: 14px;
+            text-align: left;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>WatFix Chemicals Image Placeholders</h1>
+        
+        <div class="placeholder">
+            <h2>Hero Image</h2>
+            <canvas id="heroImage" width="800" height="600"></canvas>
+            <p>Right-click and save this image as "hero-image.png"</p>
+        </div>
+        
+        <div class="placeholder">
+            <h2>About Image</h2>
+            <canvas id="aboutImage" width="800" height="600"></canvas>
+            <p>Right-click and save this image as "about-image.jpg"</p>
+        </div>
+        
+        <div class="placeholder">
+            <h2>Gallery Image 1</h2>
+            <canvas id="gallery1" width="600" height="400"></canvas>
+            <p>Right-click and save this image as "gallery-1.jpg"</p>
+        </div>
+        
+        <div class="placeholder">
+            <h2>Gallery Image 2</h2>
+            <canvas id="gallery2" width="600" height="400"></canvas>
+            <p>Right-click and save this image as "gallery-2.jpg"</p>
+        </div>
+        
+        <div class="placeholder">
+            <h2>Gallery Image 3</h2>
+            <canvas id="gallery3" width="600" height="400"></canvas>
+            <p>Right-click and save this image as "gallery-3.jpg"</p>
+        </div>
+        
+        <div class="placeholder">
+            <h2>Gallery Image 4</h2>
+            <canvas id="gallery4" width="600" height="400"></canvas>
+            <p>Right-click and save this image as "gallery-4.jpg"</p>
+        </div>
+        
+        <div class="instructions">
+            <h3>Instructions:</h3>
+            <ol>
+                <li>Right-click on each image and select "Save Image As..."</li>
+                <li>Save each image with the filename shown below it</li>
+                <li>Place all saved images in the "images" folder of your website</li>
+            </ol>
+        </div>
+    </div>
+    
+    <script>
+        // Helper function to draw water treatment themed placeholders
+        function drawWaterTreatmentPlaceholder(canvasId, title, color1, color2) {
+            const canvas = document.getElementById(canvasId);
+            const ctx = canvas.getContext('2d');
+            const width = canvas.width;
+            const height = canvas.height;
+            
+            // Create gradient background
+            const gradient = ctx.createLinearGradient(0, 0, width, height);
+            gradient.addColorStop(0, color1);
+            gradient.addColorStop(1, color2);
+            ctx.fillStyle = gradient;
+            ctx.fillRect(0, 0, width, height);
+            
+            // Draw water-like waves
+            ctx.beginPath();
+            for (let i = 0; i < width; i += 20) {
+                ctx.moveTo(i, height * 0.7);
+                ctx.bezierCurveTo(
+                    i + 5, height * 0.65,
+                    i + 15, height * 0.75,
+                    i + 20, height * 0.7
+                );
+            }
+            ctx.lineTo(width, height);
+            ctx.lineTo(0, height);
+            ctx.closePath();
+            
+            // Fill waves with semi-transparent white
+            ctx.fillStyle = 'rgba(255, 255, 255, 0.3)';
+            ctx.fill();
+            
+            // Draw some bubbles
+            for (let i = 0; i < 20; i++) {
+                const x = Math.random() * width;
+                const y = Math.random() * height * 0.7;
+                const radius = 3 + Math.random() * 15;
+                
+                ctx.beginPath();
+                ctx.arc(x, y, radius, 0, Math.PI * 2);
+                ctx.fillStyle = 'rgba(255, 255, 255, 0.2)';
+                ctx.fill();
+                ctx.strokeStyle = 'rgba(255, 255, 255, 0.5)';
+                ctx.stroke();
+            }
+            
+            // Add title text
+            ctx.font = 'bold 24px Arial';
+            ctx.fillStyle = 'white';
+            ctx.textAlign = 'center';
+            ctx.textBaseline = 'middle';
+            ctx.fillText(title, width / 2, height / 2);
+            
+            // Add WatFix Chemicals logo text
+            ctx.font = 'bold 36px Arial';
+            ctx.fillText('WatFix Chemicals', width / 2, height / 4);
+            
+            // Add a simple beaker icon
+            drawBeaker(ctx, width / 2, height * 0.4, 60);
+        }
+        
+        // Function to draw a simple beaker icon
+        function drawBeaker(ctx, x, y, size) {
+            const width = size * 0.7;
+            const height = size;
+            
+            // Beaker body
+            ctx.beginPath();
+            ctx.moveTo(x - width/2, y - height/3);
+            ctx.lineTo(x - width/2, y + height/2);
+            ctx.quadraticCurveTo(x - width/2, y + height/2 + 10, x - width/3, y + height/2 + 10);
+            ctx.lineTo(x + width/3, y + height/2 + 10);
+            ctx.quadraticCurveTo(x + width/2, y + height/2 + 10, x + width/2, y + height/2);
+            ctx.lineTo(x + width/2, y - height/3);
+            ctx.stroke();
+            ctx.fillStyle = 'rgba(255, 255, 255, 0.2)';
+            ctx.fill();
+            
+            // Beaker rim
+            ctx.beginPath();
+            ctx.moveTo(x - width/2.5, y - height/3);
+            ctx.lineTo(x - width/2.5, y - height/2);
+            ctx.lineTo(x + width/2.5, y - height/2);
+            ctx.lineTo(x + width/2.5, y - height/3);
+            ctx.stroke();
+            ctx.fillStyle = 'rgba(255, 255, 255, 0.2)';
+            ctx.fill();
+            
+            // Liquid in beaker
+            ctx.beginPath();
+            ctx.moveTo(x - width/2, y);
+            ctx.lineTo(x + width/2, y);
+            ctx.lineTo(x + width/2, y + height/2);
+            ctx.quadraticCurveTo(x + width/2, y + height/2 + 10, x + width/3, y + height/2 + 10);
+            ctx.lineTo(x - width/3, y + height/2 + 10);
+            ctx.quadraticCurveTo(x - width/2, y + height/2 + 10, x - width/2, y + height/2);
+            ctx.closePath();
+            ctx.fillStyle = 'rgba(0, 160, 227, 0.5)';
+            ctx.fill();
+            
+            // Bubbles in liquid
+            for (let i = 0; i < 5; i++) {
+                const bubbleX = x - width/3 + Math.random() * (width/1.5);
+                const bubbleY = y + Math.random() * (height/2);
+                const radius = 2 + Math.random() * 4;
+                
+                ctx.beginPath();
+                ctx.arc(bubbleX, bubbleY, radius, 0, Math.PI * 2);
+                ctx.fillStyle = 'rgba(255, 255, 255, 0.6)';
+                ctx.fill();
+            }
+        }
+        
+        // Draw all placeholder images
+        window.onload = function() {
+            drawWaterTreatmentPlaceholder('heroImage', 'Water Treatment Solutions', '#0056b3', '#00d4ff');
+            drawWaterTreatmentPlaceholder('aboutImage', 'About Our Company', '#003366', '#0078d7');
+            drawWaterTreatmentPlaceholder('gallery1', 'Water Treatment Plant', '#005792', '#00a8cc');
+            drawWaterTreatmentPlaceholder('gallery2', 'Chemical Laboratory', '#1a3a6c', '#2389da');
+            drawWaterTreatmentPlaceholder('gallery3', 'Chemical Production', '#0c4271', '#0099ff');
+            drawWaterTreatmentPlaceholder('gallery4', 'Quality Testing', '#064273', '#4cc3ff');
+        };
+    </script>
+</body>
+</html>

@@ -1,0 +1,223 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Generate Placeholder Images</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        canvas {
+            border: 1px solid #ddd;
+            margin-bottom: 20px;
+        }
+        button {
+            padding: 10px 15px;
+            background: #0056b3;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            margin-bottom: 20px;
+        }
+        .image-container {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 20px;
+        }
+        .image-item {
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+    <h1>Generate Placeholder Images for WatFix Chemicals</h1>
+    <p>Click the buttons below to generate and download placeholder images for the website.</p>
+    
+    <div class="image-container">
+        <div class="image-item">
+            <h3>Hero Image</h3>
+            <canvas id="heroCanvas" width="800" height="600"></canvas><br>
+            <button onclick="generateHeroImage()">Generate Hero Image</button>
+        </div>
+        
+        <div class="image-item">
+            <h3>About Image</h3>
+            <canvas id="aboutCanvas" width="600" height="400"></canvas><br>
+            <button onclick="generateAboutImage()">Generate About Image</button>
+        </div>
+    </div>
+    
+    <h2>Gallery Images</h2>
+    <div class="image-container">
+        <div class="image-item">
+            <canvas id="gallery1Canvas" width="400" height="300"></canvas><br>
+            <button onclick="generateGalleryImage(1)">Generate Gallery 1</button>
+        </div>
+        
+        <div class="image-item">
+            <canvas id="gallery2Canvas" width="400" height="300"></canvas><br>
+            <button onclick="generateGalleryImage(2)">Generate Gallery 2</button>
+        </div>
+        
+        <div class="image-item">
+            <canvas id="gallery3Canvas" width="400" height="300"></canvas><br>
+            <button onclick="generateGalleryImage(3)">Generate Gallery 3</button>
+        </div>
+        
+        <div class="image-item">
+            <canvas id="gallery4Canvas" width="400" height="300"></canvas><br>
+            <button onclick="generateGalleryImage(4)">Generate Gallery 4</button>
+        </div>
+    </div>
+    
+    <script>
+        // Helper function to draw gradient background
+        function drawGradientBackground(ctx, width, height, startColor, endColor) {
+            const gradient = ctx.createLinearGradient(0, 0, width, height);
+            gradient.addColorStop(0, startColor);
+            gradient.addColorStop(1, endColor);
+            ctx.fillStyle = gradient;
+            ctx.fillRect(0, 0, width, height);
+        }
+        
+        // Helper function to draw text
+        function drawText(ctx, text, x, y, fontSize, color) {
+            ctx.font = `${fontSize}px Arial`;
+            ctx.fillStyle = color;
+            ctx.textAlign = 'center';
+            ctx.fillText(text, x, y);
+        }
+        
+        // Helper function to download canvas as image
+        function downloadCanvas(canvas, filename) {
+            const link = document.createElement('a');
+            link.download = filename;
+            link.href = canvas.toDataURL('image/png');
+            link.click();
+        }
+        
+        // Generate hero image
+        function generateHeroImage() {
+            const canvas = document.getElementById('heroCanvas');
+            const ctx = canvas.getContext('2d');
+            
+            // Draw gradient background
+            drawGradientBackground(ctx, canvas.width, canvas.height, '#0056b3', '#00a0e3');
+            
+            // Draw water treatment illustration
+            ctx.fillStyle = 'rgba(255, 255, 255, 0.1)';
+            
+            // Draw water drops
+            for (let i = 0; i < 20; i++) {
+                const x = Math.random() * canvas.width;
+                const y = Math.random() * canvas.height;
+                const radius = 10 + Math.random() * 30;
+                
+                ctx.beginPath();
+                ctx.arc(x, y, radius, 0, Math.PI * 2);
+                ctx.fill();
+            }
+            
+            // Draw title
+            drawText(ctx, 'WatFix Chemicals', canvas.width / 2, canvas.height / 2 - 30, 48, 'white');
+            drawText(ctx, 'Premium Raw Chemicals for Water Treatment', canvas.width / 2, canvas.height / 2 + 30, 24, 'white');
+            
+            // Download image
+            downloadCanvas(canvas, 'hero-image.png');
+        }
+        
+        // Generate about image
+        function generateAboutImage() {
+            const canvas = document.getElementById('aboutCanvas');
+            const ctx = canvas.getContext('2d');
+            
+            // Draw gradient background
+            drawGradientBackground(ctx, canvas.width, canvas.height, '#e6f7ff', '#ffffff');
+            
+            // Draw laboratory equipment illustration
+            ctx.strokeStyle = '#0056b3';
+            ctx.lineWidth = 2;
+            
+            // Draw beakers and flasks
+            for (let i = 0; i < 5; i++) {
+                const x = 100 + i * 100;
+                const y = canvas.height - 100;
+                const height = 80 + Math.random() * 50;
+                
+                // Draw beaker
+                ctx.beginPath();
+                ctx.moveTo(x - 20, y);
+                ctx.lineTo(x - 25, y - height);
+                ctx.lineTo(x + 25, y - height);
+                ctx.lineTo(x + 20, y);
+                ctx.closePath();
+                ctx.fillStyle = 'rgba(0, 160, 227, 0.2)';
+                ctx.fill();
+                ctx.stroke();
+                
+                // Draw liquid
+                ctx.fillStyle = 'rgba(0, 86, 179, 0.3)';
+                ctx.fillRect(x - 20, y - height/2, 40, height/2);
+            }
+            
+            // Draw title
+            drawText(ctx, 'About WatFix Chemicals', canvas.width / 2, 50, 30, '#0056b3');
+            drawText(ctx, 'Quality Raw Chemicals Since 1995', canvas.width / 2, 90, 18, '#00a0e3');
+            
+            // Download image
+            downloadCanvas(canvas, 'about-image.jpg');
+        }
+        
+        // Generate gallery image
+        function generateGalleryImage(number) {
+            const canvas = document.getElementById(`gallery${number}Canvas`);
+            const ctx = canvas.getContext('2d');
+            
+            // Different color schemes for each gallery image
+            const colorSchemes = [
+                { bg1: '#0056b3', bg2: '#00a0e3', accent: '#00d4ff' },
+                { bg1: '#003366', bg2: '#0056b3', accent: '#00a0e3' },
+                { bg1: '#00a0e3', bg2: '#00d4ff', accent: '#ffffff' },
+                { bg1: '#e6f7ff', bg2: '#ffffff', accent: '#0056b3' }
+            ];
+            
+            const colors = colorSchemes[number - 1];
+            
+            // Draw gradient background
+            drawGradientBackground(ctx, canvas.width, canvas.height, colors.bg1, colors.bg2);
+            
+            // Draw chemical symbols or water treatment illustrations
+            ctx.fillStyle = 'rgba(255, 255, 255, 0.1)';
+            
+            // Draw grid pattern
+            ctx.strokeStyle = colors.accent;
+            ctx.lineWidth = 1;
+            
+            for (let i = 0; i < canvas.width; i += 20) {
+                ctx.beginPath();
+                ctx.moveTo(i, 0);
+                ctx.lineTo(i, canvas.height);
+                ctx.stroke();
+            }
+            
+            for (let i = 0; i < canvas.height; i += 20) {
+                ctx.beginPath();
+                ctx.moveTo(0, i);
+                ctx.lineTo(canvas.width, i);
+                ctx.stroke();
+            }
+            
+            // Draw title
+            drawText(ctx, `Water Treatment Process ${number}`, canvas.width / 2, canvas.height / 2, 24, 'white');
+            
+            // Download image
+            downloadCanvas(canvas, `gallery-${number}.jpg`);
+        }
+    </script>
+</body>
+</html>
