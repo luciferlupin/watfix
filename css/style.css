@@ -320,11 +320,31 @@ header .container {
     flex-direction: column;
     position: relative;
     overflow: hidden;
+    cursor: pointer;
 }
 
 .product-card:hover {
     transform: translateY(-5px);
     box-shadow: 0 15px 30px rgba(0, 0, 0, 0.15);
+}
+
+.product-card::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    right: 0;
+    width: 0;
+    height: 0;
+    border-style: solid;
+    border-width: 0 30px 30px 0;
+    border-color: transparent var(--light-blue) transparent transparent;
+    transition: var(--transition);
+    opacity: 0.7;
+}
+
+.product-card:hover::after {
+    border-color: transparent var(--primary-color) transparent transparent;
+    opacity: 1;
 }
 
 .product-icon {
@@ -403,6 +423,38 @@ header .container {
 .learn-more:active {
     transform: translateY(0);
     box-shadow: 0 2px 5px rgba(0, 86, 179, 0.2);
+}
+
+@media (max-width: 768px) {
+    .product-card::before {
+        content: 'Tap for details';
+        position: absolute;
+        bottom: 10px;
+        right: 10px;
+        font-size: 12px;
+        color: var(--primary-color);
+        opacity: 0.7;
+        font-style: italic;
+    }
+    
+    .product-card:active {
+        transform: scale(0.98);
+        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+    }
+    
+    @keyframes pulse {
+        0% { transform: scale(1); }
+        50% { transform: scale(1.05); }
+        100% { transform: scale(1); }
+    }
+    
+    .product-card .learn-more {
+        animation: pulse 2s infinite;
+    }
+    
+    .product-card:active .learn-more {
+        animation: none;
+    }
 }
 
 /* Mobile-specific styles for learn-more button */
