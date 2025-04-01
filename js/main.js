@@ -87,7 +87,18 @@ document.addEventListener('DOMContentLoaded', function() {
         if (whatsappBtn) {
             whatsappBtn.addEventListener('click', function(e) {
                 e.preventDefault();
-                
+                sendWhatsAppMessage();
+            });
+            
+            // Add touchend event for mobile devices
+            whatsappBtn.addEventListener('touchend', function(e) {
+                e.preventDefault();
+                e.stopPropagation(); // Prevent event bubbling
+                sendWhatsAppMessage();
+            });
+            
+            // Function to handle WhatsApp message sending
+            function sendWhatsAppMessage() {
                 // Reset error messages
                 const errorElements = document.querySelectorAll('.error-message');
                 errorElements.forEach(element => {
@@ -157,7 +168,7 @@ document.addEventListener('DOMContentLoaded', function() {
                     // Format the product name
                     const productName = product === 'Other' ? otherProduct : product;
                     
-                    // Create WhatsApp message text with all form fields - using encodeURIComponent for proper URL encoding
+                    // Create WhatsApp message text with all form fields
                     const messageText = `*New Inquiry from WatFix Chemicals Website*
 
 *Name:* ${name}
@@ -171,7 +182,7 @@ document.addEventListener('DOMContentLoaded', function() {
 *Additional Requirements:*
 ${message}`;
 
-                    // Properly encode the message for URL
+                    // Properly encode the message for URL - use shorter segments for mobile compatibility
                     const encodedText = encodeURIComponent(messageText);
                     
                     // Create WhatsApp URL with the phone number and message
@@ -180,8 +191,10 @@ ${message}`;
                     // Log the URL for debugging
                     console.log("WhatsApp URL:", whatsappUrl);
                     
-                    // Redirect to WhatsApp immediately
-                    window.location.href = whatsappUrl;
+                    // For mobile devices, use a timeout to ensure the redirect works properly
+                    setTimeout(function() {
+                        window.location.href = whatsappUrl;
+                    }, 300);
                 } else {
                     // Scroll to the first error
                     const firstError = document.querySelector('.error-message:not(:empty)');
@@ -189,7 +202,7 @@ ${message}`;
                         firstError.scrollIntoView({ behavior: 'smooth', block: 'center' });
                     }
                 }
-            });
+            }
         }
         
         // Pre-fill product dropdown if coming from a product section
@@ -217,18 +230,35 @@ ${message}`;
         });
     }
     
-    // Email validation function
-    function isValidEmail(email) {
-        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-        return emailRegex.test(email);
+    // Event listener for product links
+    const productLinks = document.querySelectorAll('.learn-more[href^="#modal-"]');
+    if (productLinks.length > 0) {
+        productLinks.forEach(link => {
+            link.addEventListener('click', function(e) {
+                e.preventDefault();
+                const modalId = this.getAttribute('href').substring(1); // Remove the # from href
+                console.log("Link clicked for modal:", modalId);
+                openModal(modalId);
+            });
+            
+            // Add touchend event for mobile devices
+            link.addEventListener('touchend', function(e) {
+                e.preventDefault();
+                e.stopPropagation(); // Prevent event bubbling
+                const modalId = this.getAttribute('href').substring(1); // Remove the # from href
+                console.log("Touch event for modal:", modalId);
+                openModal(modalId);
+            });
+        });
+    } else {
+        console.error("No product links found with class 'learn-more'");
     }
-
+    
     // Enhanced modal functionality for cross-platform compatibility
     const modalContainer = document.getElementById('modalContainer');
     const modalOverlay = document.querySelector('.modal-overlay');
     const modals = document.querySelectorAll('.modal');
     const closeButtons = document.querySelectorAll('.modal-close');
-    const productLinks = document.querySelectorAll('.learn-more[href^="#modal-"]');
     
     // Function to open modal with platform-specific optimizations
     function openModal(modalId) {
@@ -327,20 +357,6 @@ ${message}`;
             element.removeAttribute('aria-hidden');
             element.removeAttribute('data-modal-hidden');
         });
-    }
-    
-    // Event listener for product links
-    if (productLinks.length > 0) {
-        productLinks.forEach(link => {
-            link.addEventListener('click', function(e) {
-                e.preventDefault();
-                const modalId = this.getAttribute('href').substring(1); // Remove the # from href
-                console.log("Link clicked for modal:", modalId);
-                openModal(modalId);
-            });
-        });
-    } else {
-        console.error("No product links found with class 'learn-more'");
     }
     
     // Event listener for close buttons
@@ -510,3 +526,9 @@ ${message}`;
     `;
     document.head.appendChild(style);
 });
+
+// Email validation function
+function isValidEmail(email) {
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    return emailRegex.test(email);
+}

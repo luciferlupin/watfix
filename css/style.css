@@ -703,6 +703,12 @@ input:focus:invalid, select:focus:invalid, textarea:focus:invalid {
     font-weight: bold;
     cursor: pointer;
     color: #fff;
+    /* Improve touch target size */
+    width: 44px;
+    height: 44px;
+    line-height: 44px;
+    text-align: center;
+    border-radius: 50%;
 }
 
 .modal-body {
@@ -756,12 +762,16 @@ input:focus:invalid, select:focus:invalid, textarea:focus:invalid {
 .modal-cta {
     display: inline-block;
     margin-top: 10px;
-    padding: 10px 20px;
+    padding: 12px 24px;
     background-color: #0056b3;
     color: #fff;
     text-decoration: none;
     border-radius: 4px;
     transition: background-color 0.3s;
+    /* Improve touch target size */
+    min-height: 44px;
+    min-width: 120px;
+    text-align: center;
 }
 
 .modal-cta:hover {
@@ -789,9 +799,124 @@ input:focus:invalid, select:focus:invalid, textarea:focus:invalid {
 @media (max-width: 767px) {
     .modal {
         width: 95%;
+        max-height: 80vh;
     }
     
     .modal-header h2 {
+        font-size: 20px;
+        padding-right: 40px; /* Make room for the close button */
+    }
+    
+    .modal-close {
+        top: 10px;
+        right: 10px;
+    }
+    
+    .modal-body {
+        max-height: calc(80vh - 70px);
+    }
+    
+    .modal-content {
+        padding: 15px;
+    }
+    
+    .modal-cta {
+        display: block;
+        width: 100%;
+        margin-top: 20px;
+        padding: 14px 20px;
+    }
+}
+
+/* Improved touch target sizes for mobile */
+@media (max-width: 768px) {
+    button, 
+    .btn, 
+    .learn-more,
+    .modal-cta,
+    .whatsapp-btn,
+    .nav-links a,
+    .footer-links a,
+    .footer-products a,
+    .social-icons a,
+    .modal-close,
+    input[type="submit"] {
+        min-height: 44px;
+        min-width: 44px;
+        padding: 12px 20px;
+        margin: 8px 0;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 16px; /* Ensure text is readable */
+    }
+    
+    /* Specific styling for learn-more buttons in product cards */
+    .product-card .learn-more {
+        display: block;
+        width: 100%;
+        text-align: center;
+        margin-top: 15px;
+        padding: 12px 0;
+        background-color: var(--primary-color);
+        color: white;
+        border-radius: 4px;
+        font-weight: 500;
+        transition: var(--transition);
+        -webkit-tap-highlight-color: transparent;
+    }
+    
+    /* Active state for touch feedback */
+    .product-card .learn-more:active,
+    .modal-cta:active,
+    .whatsapp-btn:active {
+        transform: scale(0.98);
+        background-color: var(--dark-blue);
+    }
+    
+    .hamburger span {
+        height: 3px;
+    }
+    
+    .whatsapp-float {
+        width: 60px;
+        height: 60px;
+        bottom: 30px;
+        left: 30px;
+    }
+    
+    /* Add extra padding to form elements */
+    input, 
+    select, 
+    textarea {
+        padding: 14px;
+        margin-bottom: 15px;
+        font-size: 16px; /* Prevent zoom on iOS */
+        border-radius: 4px;
+    }
+    
+    /* Improve form labels */
+    label {
+        display: block;
+        margin-bottom: 8px;
+        font-weight: 500;
+    }
+    
+    /* Improve WhatsApp button in form */
+    .whatsapp-btn {
+        display: flex;
+        width: 100%;
+        justify-content: center;
+        align-items: center;
+        padding: 16px 20px;
+        margin-top: 10px;
+        font-size: 16px;
+        font-weight: 600;
+        border-radius: 6px;
+    }
+    
+    .whatsapp-btn i {
+        margin-right: 10px;
         font-size: 20px;
     }
 }
@@ -883,72 +1008,89 @@ button,
     touch-action: manipulation;
 }
 
-/* Improved touch target sizes for mobile */
-@media (max-width: 768px) {
-    button, 
-    .btn, 
-    .learn-more,
-    .modal-cta,
-    .whatsapp-btn,
-    .nav-links a,
-    .footer-links a,
-    .footer-products a,
-    .social-icons a,
-    .modal-close,
-    input[type="submit"] {
-        min-height: 44px;
-        min-width: 44px;
-        padding: 12px 20px;
-        margin: 8px 0;
-        display: inline-flex;
-        align-items: center;
-        justify-content: center;
+/* Responsive Styles */
+@media (max-width: 992px) {
+    .hero-content h1 {
+        font-size: 2.5rem;
     }
     
-    .hamburger span {
-        height: 3px;
+    .about-content,
+    .contact-wrapper {
+        flex-direction: column;
     }
     
-    .whatsapp-float {
-        width: 60px;
-        height: 60px;
-        bottom: 30px;
-        left: 30px;
-    }
-    
-    /* Add extra padding to form elements */
-    input, 
-    select, 
-    textarea {
-        padding: 12px;
-        margin-bottom: 15px;
-    }
-    
-    /* Improve form labels */
-    label {
-        display: block;
-        margin-bottom: 8px;
-        font-weight: 500;
+    .about-image {
+        margin-bottom: 30px;
     }
 }
 
-/* iOS-specific fixes */
-@supports (-webkit-touch-callout: none) {
-    /* iOS-specific styles */
-    input, 
-    select, 
-    textarea, 
-    button {
-        font-size: 16px; /* Prevents iOS zoom on focus */
+@media (max-width: 768px) {
+    .hamburger {
+        display: block;
     }
     
-    .modal-body {
-        -webkit-overflow-scrolling: touch;
+    .nav-links {
+        position: fixed;
+        top: 70px;
+        left: -100%;
+        width: 100%;
+        height: calc(100vh - 70px);
+        background: var(--white);
+        flex-direction: column;
+        align-items: center;
+        justify-content: flex-start;
+        padding-top: 50px;
+        transition: var(--transition);
     }
     
-    /* Fix for iOS momentum scrolling */
-    body, .modal-body {
-        -webkit-overflow-scrolling: touch;
+    .nav-links.active {
+        left: 0;
+    }
+    
+    .nav-links li {
+        margin: 15px 0;
+    }
+    
+    .hero .container {
+        flex-direction: column;
+    }
+    
+    .hero-content {
+        padding-right: 0;
+        margin-bottom: 40px;
+        text-align: center;
+    }
+    
+    .section-header h2 {
+        font-size: 2rem;
+    }
+    
+    .footer-bottom {
+        flex-direction: column;
+        text-align: center;
+    }
+    
+    .footer-bottom p {
+        margin-bottom: 15px;
+    }
+}
+
+@media (max-width: 576px) {
+    .products-grid,
+    .gallery-grid {
+        grid-template-columns: 1fr;
+    }
+    
+    .hero-content h1 {
+        font-size: 2rem;
+    }
+    
+    .section-header h2 {
+        font-size: 1.8rem;
+    }
+    
+    .cta h2 {
+        font-size: 1.8rem;
     }
 }
 
@@ -1098,90 +1240,4 @@ footer {
     font-size: 3rem;
     margin-bottom: 15px;
     display: block;
-}
-
-/* Responsive Styles */
-@media (max-width: 992px) {
-    .hero-content h1 {
-        font-size: 2.5rem;
-    }
-    
-    .about-content,
-    .contact-wrapper {
-        flex-direction: column;
-    }
-    
-    .about-image {
-        margin-bottom: 30px;
-    }
-}
-
-@media (max-width: 768px) {
-    .hamburger {
-        display: block;
-    }
-    
-    .nav-links {
-        position: fixed;
-        top: 70px;
-        left: -100%;
-        width: 100%;
-        height: calc(100vh - 70px);
-        background: var(--white);
-        flex-direction: column;
-        align-items: center;
-        justify-content: flex-start;
-        padding-top: 50px;
-        transition: var(--transition);
-    }
-    
-    .nav-links.active {
-        left: 0;
-    }
-    
-    .nav-links li {
-        margin: 15px 0;
-    }
-    
-    .hero .container {
-        flex-direction: column;
-    }
-    
-    .hero-content {
-        padding-right: 0;
-        margin-bottom: 40px;
-        text-align: center;
-    }
-    
-    .section-header h2 {
-        font-size: 2rem;
-    }
-    
-    .footer-bottom {
-        flex-direction: column;
-        text-align: center;
-    }
-    
-    .footer-bottom p {
-        margin-bottom: 15px;
-    }
-}
-
-@media (max-width: 576px) {
-    .products-grid,
-    .gallery-grid {
-        grid-template-columns: 1fr;
-    }
-    
-    .hero-content h1 {
-        font-size: 2rem;
-    }
-    
-    .section-header h2 {
-        font-size: 1.8rem;
-    }
-    
-    .cta h2 {
-        font-size: 1.8rem;
-    }
 }
