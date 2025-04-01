@@ -20,37 +20,58 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     }
 
-    // Make entire product card clickable
+    // Make entire product card clickable - FIXED FOR MOBILE
     const productCards = document.querySelectorAll('.product-card');
-
+    
     productCards.forEach(function(card) {
         // Find the associated detail link and modal ID
         const detailLink = card.querySelector('.learn-more');
         if (detailLink) {
             const modalId = detailLink.getAttribute('href');
-
+            
             // Click event for desktop
             card.addEventListener('click', function(e) {
                 // Don't open modal if clicking on the learn-more button (it has its own handler)
                 if (!e.target.closest('.learn-more')) {
+                    e.preventDefault();
+                    console.log("Card clicked, opening modal:", modalId);
                     openModal(modalId);
                 }
             });
-
-            // Touch event for mobile
+            
+            // Touch event for mobile - FIXED
+            card.addEventListener('touchstart', function(e) {
+                // Store the touch position for later comparison
+                this.touchStartX = e.touches[0].clientX;
+                this.touchStartY = e.touches[0].clientY;
+            }, { passive: true });
+            
             card.addEventListener('touchend', function(e) {
                 // Don't open modal if touching the learn-more button (it has its own handler)
-                if (!e.target.closest('.learn-more')) {
-                    e.preventDefault();
-                    openModal(modalId);
+                if (e.target.closest('.learn-more')) {
+                    return; // Let the button handle it
+                }
+                
+                // Check if this was a tap (not a scroll)
+                if (this.touchStartX && this.touchStartY) {
+                    const touchEndX = e.changedTouches[0].clientX;
+                    const touchEndY = e.changedTouches[0].clientY;
+                    
+                    // Calculate distance moved
+                    const distX = Math.abs(touchEndX - this.touchStartX);
+                    const distY = Math.abs(touchEndY - this.touchStartY);
+                    
+                    // If it's a tap (minimal movement), open the modal
+                    if (distX < 10 && distY < 10) {
+                        e.preventDefault();
+                        console.log("Card tapped on mobile, opening modal:", modalId);
+                        openModal(modalId);
+                    }
                 }
             });
-
+            
             // Add cursor pointer to indicate clickable
             card.style.cursor = 'pointer';
-
-            // Add subtle hover effect to indicate clickable
-            card.classList.add('clickable-card');
         }
     });
 
@@ -98,7 +119,53 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     });
 
-    // Product Inquiry Form Handling
+    // Event listener for product links - FIXED FOR MOBILE
+    const detailLinks = document.querySelectorAll('.learn-more[href^="#modal-"]');
+    if (detailLinks.length > 0) {
+        detailLinks.forEach(link => {
+            const modalId = link.getAttribute('href');
+            
+            // Click event for desktop
+            link.addEventListener('click', function(e) {
+                e.preventDefault();
+                e.stopPropagation(); // Prevent triggering parent card's click
+                console.log("Detail button clicked, opening modal:", modalId);
+                openModal(modalId);
+            });
+            
+            // Touch events for mobile - FIXED
+            link.addEventListener('touchstart', function(e) {
+                // Store the touch position for later comparison
+                this.touchStartX = e.touches[0].clientX;
+                this.touchStartY = e.touches[0].clientY;
+            }, { passive: true });
+            
+            link.addEventListener('touchend', function(e) {
+                e.preventDefault();
+                e.stopPropagation(); // Prevent triggering parent card's click
+                
+                // Check if this was a tap (not a scroll)
+                if (this.touchStartX && this.touchStartY) {
+                    const touchEndX = e.changedTouches[0].clientX;
+                    const touchEndY = e.changedTouches[0].clientY;
+                    
+                    // Calculate distance moved
+                    const distX = Math.abs(touchEndX - this.touchStartX);
+                    const distY = Math.abs(touchEndY - this.touchStartY);
+                    
+                    // If it's a tap (minimal movement), open the modal
+                    if (distX < 10 && distY < 10) {
+                        console.log("Detail button tapped on mobile, opening modal:", modalId);
+                        openModal(modalId);
+                    }
+                }
+            });
+        });
+    } else {
+        console.error("No product links found with class 'learn-more'");
+    }
+
+    // Product Inquiry Form Handling - FIXED VALIDATION AND WHATSAPP SUBMISSION
     const inquiryForm = document.getElementById('productInquiryForm');
 
     if (inquiryForm) {
@@ -120,24 +187,55 @@ document.addEventListener('DOMContentLoaded', function() {
         const whatsappBtn = inquiryForm.querySelector('.whatsapp-btn');
 
         if (whatsappBtn) {
+            // Click event for desktop
             whatsappBtn.addEventListener('click', function(e) {
                 e.preventDefault();
+                console.log("WhatsApp button clicked");
                 sendWhatsAppMessage();
             });
 
-            // Add touchend event for mobile devices
+            // Touch events for mobile - FIXED
+            whatsappBtn.addEventListener('touchstart', function(e) {
+                // Store the touch position for later comparison
+                this.touchStartX = e.touches[0].clientX;
+                this.touchStartY = e.touches[0].clientY;
+            }, { passive: true });
+            
             whatsappBtn.addEventListener('touchend', function(e) {
                 e.preventDefault();
-                e.stopPropagation(); // Prevent event bubbling
-                sendWhatsAppMessage();
+                
+                // Check if this was a tap (not a scroll)
+                if (this.touchStartX && this.touchStartY) {
+                    const touchEndX = e.changedTouches[0].clientX;
+                    const touchEndY = e.changedTouches[0].clientY;
+                    
+                    // Calculate distance moved
+                    const distX = Math.abs(touchEndX - this.touchStartX);
+                    const distY = Math.abs(touchEndY - this.touchStartY);
+                    
+                    // If it's a tap (minimal movement), process the form
+                    if (distX < 10 && distY < 10) {
+                        console.log("WhatsApp button tapped on mobile");
+                        sendWhatsAppMessage();
+                    }
+                }
             });
 
-            // Function to handle WhatsApp message sending
+            // Function to handle WhatsApp message sending - IMPROVED VALIDATION
             function sendWhatsAppMessage() {
-                // Reset error messages
+                console.log("Processing WhatsApp form submission");
+                
+                // Clear previous error messages
                 const errorElements = document.querySelectorAll('.error-message');
                 errorElements.forEach(element => {
                     element.textContent = '';
+                    element.style.display = 'none';
+                });
+                
+                // Reset form field highlighting
+                const formFields = inquiryForm.querySelectorAll('input, select, textarea');
+                formFields.forEach(field => {
+                    field.classList.remove('error-field');
                 });
 
                 // Get form values
@@ -155,49 +253,60 @@ document.addEventListener('DOMContentLoaded', function() {
 
                 // Validate form
                 let isValid = true;
+                
+                // Helper function to show error
+                function showError(fieldId, message) {
+                    const errorElement = document.getElementById(fieldId + '-error');
+                    if (errorElement) {
+                        errorElement.textContent = message;
+                        errorElement.style.display = 'block';
+                    }
+                    
+                    const field = document.getElementById(fieldId);
+                    if (field) {
+                        field.classList.add('error-field');
+                        field.focus();
+                    }
+                    
+                    isValid = false;
+                }
 
                 if (name === '') {
-                    document.getElementById('name-error').textContent = 'Please enter your name';
-                    isValid = false;
+                    showError('name', 'Please enter your name');
                 }
 
                 if (company === '') {
-                    document.getElementById('company-error').textContent = 'Please enter your company name';
-                    isValid = false;
+                    showError('company', 'Please enter your company name');
                 }
 
                 if (email === '') {
-                    document.getElementById('email-error').textContent = 'Please enter your email';
-                    isValid = false;
+                    showError('email', 'Please enter your email');
                 } else if (!isValidEmail(email)) {
-                    document.getElementById('email-error').textContent = 'Please enter a valid email';
-                    isValid = false;
+                    showError('email', 'Please enter a valid email');
                 }
 
                 if (phone === '') {
-                    document.getElementById('phone-error').textContent = 'Please enter your phone number';
-                    isValid = false;
+                    showError('phone', 'Please enter your phone number');
                 }
 
                 if (product === '') {
-                    document.getElementById('product-error').textContent = 'Please select a product';
-                    isValid = false;
+                    showError('product', 'Please select a product');
                 }
 
                 if (product === 'Other' && otherProduct === '') {
-                    document.getElementById('otherProduct-error').textContent = 'Please provide product details';
-                    isValid = false;
+                    showError('otherProduct', 'Please provide product details');
                 }
 
                 if (message === '') {
-                    document.getElementById('message-error').textContent = 'Please enter your message';
-                    isValid = false;
+                    showError('message', 'Please enter your message');
                 }
 
                 // If form is valid, redirect to WhatsApp
                 if (isValid) {
+                    console.log("Form is valid, preparing WhatsApp message");
+                    
                     // Get additional form values
-                    const quantity = document.getElementById('quantity').value.trim();
+                    const quantity = document.getElementById('quantity').value;
                     const frequency = document.getElementById('frequency').value;
 
                     // Format the product name
@@ -210,12 +319,10 @@ document.addEventListener('DOMContentLoaded', function() {
 *Company:* ${company}
 *Email:* ${email}
 *Phone:* ${phone}
-*Product Interest:* ${productName}
-*Quantity:* ${quantity || 'Not specified'}
-*Purchase Frequency:* ${frequency || 'Not specified'}
-
-*Additional Requirements:*
-${message}`;
+*Product:* ${productName}
+*Quantity:* ${quantity}
+*Frequency:* ${frequency}
+*Message:* ${message}`;
 
                     // Properly encode the message for URL - use shorter segments for mobile compatibility
                     const encodedText = encodeURIComponent(messageText);
@@ -225,26 +332,38 @@ ${message}`;
 
                     // Log the URL for debugging
                     console.log("WhatsApp URL:", whatsappUrl);
+                    
+                    // Show loading indicator
+                    const loadingIndicator = document.createElement('div');
+                    loadingIndicator.className = 'loading-indicator';
+                    loadingIndicator.innerHTML = '<span>Redirecting to WhatsApp...</span>';
+                    document.body.appendChild(loadingIndicator);
 
                     // For mobile devices, use a timeout to ensure the redirect works properly
                     setTimeout(function() {
+                        // Remove loading indicator
+                        document.body.removeChild(loadingIndicator);
+                        
+                        // Redirect to WhatsApp
                         window.location.href = whatsappUrl;
-                    }, 300);
+                    }, 500);
                 } else {
+                    console.log("Form validation failed");
+                    
                     // Scroll to the first error
-                    const firstError = document.querySelector('.error-message:not(:empty)');
+                    const firstError = document.querySelector('.error-field');
                     if (firstError) {
                         firstError.scrollIntoView({ behavior: 'smooth', block: 'center' });
                     }
                 }
             }
         }
-
+        
         // Pre-fill product dropdown if coming from a product section
-        const productLinks = document.querySelectorAll('.product-card .learn-more');
+        const detailButtons = document.querySelectorAll('.product-card .learn-more');
 
-        productLinks.forEach(link => {
-            link.addEventListener('click', function(e) {
+        detailButtons.forEach(button => {
+            button.addEventListener('click', function(e) {
                 const productName = this.getAttribute('data-product');
                 if (productName) {
                     const productSelect = document.getElementById('product');
@@ -266,9 +385,9 @@ ${message}`;
     }
 
     // Event listener for product links
-    const productLinks = document.querySelectorAll('.learn-more[href^="#modal-"]');
-    if (productLinks.length > 0) {
-        productLinks.forEach(link => {
+    const learnMoreButtons = document.querySelectorAll('.learn-more[href^="#modal-"]');
+    if (learnMoreButtons.length > 0) {
+        learnMoreButtons.forEach(link => {
             link.addEventListener('click', function(e) {
                 e.preventDefault();
                 const modalId = this.getAttribute('href').substring(1); // Remove the # from href
@@ -416,22 +535,22 @@ ${message}`;
     });
 
     // Open modal when clicking on learn more links
-    const detailLinks = document.querySelectorAll('.learn-more');
+    const learnMoreLinks = document.querySelectorAll('.learn-more');
 
-    detailLinks.forEach(function(link) {
+    learnMoreLinks.forEach(function(link) {
         const modalId = link.getAttribute('href');
 
         // Click event for desktop
         link.addEventListener('click', function(e) {
             e.preventDefault();
-            e.stopPropagation(); // Prevent triggering the parent card's click
+            e.stopPropagation(); // Prevent event bubbling
             openModal(modalId);
         });
 
         // Touch event for mobile
         link.addEventListener('touchend', function(e) {
             e.preventDefault();
-            e.stopPropagation(); // Prevent triggering the parent card's click
+            e.stopPropagation(); // Prevent event bubbling
             openModal(modalId);
         });
     });
