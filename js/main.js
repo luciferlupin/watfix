@@ -174,8 +174,6 @@ document.addEventListener('DOMContentLoaded', function() {
                 // Get additional form values
                 const quantity = document.getElementById('quantity').value.trim();
                 const frequency = document.getElementById('frequency').value;
-                const technical = document.getElementById('technical').checked ? 'Yes' : 'No';
-                const newsletter = document.getElementById('newsletter').checked ? 'Yes' : 'No';
                 
                 // Format the product name
                 const productName = product === 'Other' ? otherProduct : product;
@@ -190,8 +188,6 @@ document.addEventListener('DOMContentLoaded', function() {
 *Product Interest:* ${productName}
 *Quantity:* ${quantity || 'Not specified'}
 *Purchase Frequency:* ${frequency || 'Not specified'}
-*Technical Specs Requested:* ${technical}
-*Newsletter Subscription:* ${newsletter}
 
 *Additional Requirements:*
 ${message}`;
