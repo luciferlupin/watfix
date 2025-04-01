@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>WatFix Chemicals - Form Demo</title>
+    <style>
+        body {
+            font-family: 'Poppins', sans-serif;
+            line-height: 1.6;
+            color: #333;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        h1 {
+            color: #0056b3;
+            margin-bottom: 20px;
+        }
+        .demo-container {
+            display: flex;
+            flex-direction: column;
+            gap: 30px;
+        }
+        .step {
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            padding: 20px;
+            background-color: #f9f9f9;
+        }
+        .step h2 {
+            margin-top: 0;
+            color: #0056b3;
+            font-size: 1.4rem;
+        }
+        .form-preview {
+            border: 1px solid #ccc;
+            border-radius: 8px;
+            padding: 20px;
+            background-color: white;
+        }
+        .form-group {
+            margin-bottom: 15px;
+        }
+        .form-group label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: bold;
+        }
+        .form-group input,
+        .form-group select,
+        .form-group textarea {
+            width: 100%;
+            padding: 8px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+        }
+        .btn {
+            background-color: #0056b3;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-weight: bold;
+        }
+        .success-message {
+            background-color: #d4edda;
+            color: #155724;
+            padding: 15px;
+            border-radius: 4px;
+            text-align: center;
+        }
+        .whatsapp-preview {
+            background-color: #e5ffcc;
+            border: 1px solid #99cc33;
+            border-radius: 8px;
+            padding: 15px;
+            font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+        }
+        .whatsapp-preview strong {
+            font-weight: bold;
+        }
+        img {
+            max-width: 100%;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+        }
+        .back-link {
+            display: inline-block;
+            margin-top: 20px;
+            color: #0056b3;
+            text-decoration: none;
+        }
+        .back-link:hover {
+            text-decoration: underline;
+        }
+    </style>
+</head>
+<body>
+    <h1>WatFix Chemicals - Form to WhatsApp Demo</h1>
+    
+    <div class="demo-container">
+        <div class="step">
+            <h2>Step 1: User Fills Out the Form</h2>
+            <div class="form-preview">
+                <div class="form-group">
+                    <label for="name">Name</label>
+                    <input type="text" id="name" value="John Smith">
+                </div>
+                <div class="form-group">
+                    <label for="company">Company Name</label>
+                    <input type="text" id="company" value="Aqua Solutions Ltd.">
+                </div>
+                <div class="form-group">
+                    <label for="email">Email</label>
+                    <input type="email" id="email" value="john@aquasolutions.com">
+                </div>
+                <div class="form-group">
+                    <label for="phone">Phone</label>
+                    <input type="tel" id="phone" value="+91 98765 43210">
+                </div>
+                <div class="form-group">
+                    <label for="product">Product of Interest</label>
+                    <select id="product">
+                        <option value="Scale & Corrosion Inhibitors" selected>Scale & Corrosion Inhibitors</option>
+                        <option value="Boiler Water Treatment Chemicals">Boiler Water Treatment Chemicals</option>
+                        <option value="Polymers">Polymers</option>
+                        <option value="Cooling Tower Chemicals">Cooling Tower Chemicals</option>
+                        <option value="STP/ETP Raw Chemicals">STP/ETP Raw Chemicals</option>
+                        <option value="Specialty Chemicals">Specialty Chemicals</option>
+                        <option value="OEM Formulation Chemicals">OEM Formulation Chemicals</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="message">Message</label>
+                    <textarea id="message" rows="4">We are looking for high-quality scale inhibitors for our industrial cooling systems. Could you please provide information about your HEDP products and pricing for bulk orders?</textarea>
+                </div>
+                <button type="button" class="btn" id="submitBtn">Submit Inquiry</button>
+            </div>
+        </div>
+        
+        <div class="step" id="step2" style="display: none;">
+            <h2>Step 2: Success Message Appears</h2>
+            <div class="success-message">
+                <h3>Thank you for your inquiry!</h3>
+                <p>Redirecting you to WhatsApp to complete your request...</p>
+            </div>
+        </div>
+        
+        <div class="step" id="step3" style="display: none;">
+            <h2>Step 3: WhatsApp Opens with Pre-filled Message</h2>
+            <p>The user is redirected to WhatsApp (app or web) with this pre-filled message:</p>
+            <div class="whatsapp-preview">
+                <p><strong>New Inquiry from WatFix Chemicals Website</strong></p>
+                <p><strong>Name:</strong> John Smith<br>
+                <strong>Company:</strong> Aqua Solutions Ltd.<br>
+                <strong>Email:</strong> john@aquasolutions.com<br>
+                <strong>Phone:</strong> +91 98765 43210<br>
+                <strong>Product Interest:</strong> Scale & Corrosion Inhibitors</p>
+                <p><strong>Message:</strong><br>
+                We are looking for high-quality scale inhibitors for our industrial cooling systems. Could you please provide information about your HEDP products and pricing for bulk orders?</p>
+            </div>
+            <p>On mobile devices, this will open in the WhatsApp app. On desktop, it will open in WhatsApp Web.</p>
+            <p>The message is sent to: <strong>+91 8076419279</strong></p>
+            
+            <h3>What it looks like on mobile:</h3>
+            <img src="https://i.imgur.com/JKLMnOp.jpg" alt="WhatsApp Mobile Preview" style="max-width: 300px; display: block; margin: 0 auto;">
+        </div>
+    </div>
+    
+    <a href="index.html" class="back-link">← Back to Website</a>
+    
+    <script>
+        document.getElementById('submitBtn').addEventListener('click', function() {
+            // Show step 2
+            document.getElementById('step2').style.display = 'block';
+            
+            // Scroll to step 2
+            document.getElementById('step2').scrollIntoView({ behavior: 'smooth' });
+            
+            // After 1.5 seconds, show step 3
+            setTimeout(function() {
+                document.getElementById('step3').style.display = 'block';
+                document.getElementById('step3').scrollIntoView({ behavior: 'smooth' });
+            }, 1500);
+        });
+    </script>
+</body>
+</html>

@@ -180,13 +180,8 @@ document.addEventListener('DOMContentLoaded', function() {
                 // Create WhatsApp URL with the phone number and message
                 const whatsappUrl = `https://wa.me/918076419279?text=${whatsappText}`;
                 
-                // Show success message before redirecting
-                inquiryForm.innerHTML = '<div class="success-message"><h3>Thank you for your inquiry!</h3><p>Redirecting you to WhatsApp to complete your request...</p></div>';
-                
-                // Redirect to WhatsApp after a short delay (1.5 seconds)
-                setTimeout(function() {
-                    window.open(whatsappUrl, '_blank');
-                }, 1500);
+                // Redirect to WhatsApp immediately
+                window.open(whatsappUrl, '_blank');
             }
         });
     }
