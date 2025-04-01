@@ -171,11 +171,17 @@ document.addEventListener('DOMContentLoaded', function() {
             
             // If form is valid, redirect to WhatsApp
             if (isValid) {
+                // Get additional form values
+                const quantity = document.getElementById('quantity').value.trim();
+                const frequency = document.getElementById('frequency').value;
+                const technical = document.getElementById('technical').checked ? 'Yes' : 'No';
+                const newsletter = document.getElementById('newsletter').checked ? 'Yes' : 'No';
+                
                 // Format the product name
                 const productName = product === 'Other' ? otherProduct : product;
                 
-                // Create WhatsApp message text
-                const whatsappText = `*New Inquiry from WatFix Chemicals Website*%0A%0A*Name:* ${name}%0A*Company:* ${company}%0A*Email:* ${email}%0A*Phone:* ${phone}%0A*Product Interest:* ${productName}%0A%0A*Message:*%0A${message}`;
+                // Create WhatsApp message text with all form fields
+                const whatsappText = `*New Inquiry from WatFix Chemicals Website*%0A%0A*Name:* ${name}%0A*Company:* ${company}%0A*Email:* ${email}%0A*Phone:* ${phone}%0A*Product Interest:* ${productName}%0A*Quantity:* ${quantity || 'Not specified'}%0A*Purchase Frequency:* ${frequency || 'Not specified'}%0A*Technical Specs Requested:* ${technical}%0A*Newsletter Subscription:* ${newsletter}%0A%0A*Additional Requirements:*%0A${message}`;
                 
                 // Create WhatsApp URL with the phone number and message
                 const whatsappUrl = `https://wa.me/918076419279?text=${whatsappText}`;
