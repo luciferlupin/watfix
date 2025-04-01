@@ -64,9 +64,9 @@ document.addEventListener('DOMContentLoaded', function() {
     });
 
     // Product Inquiry Form Handling
-    const productInquiryForm = document.getElementById('productInquiryForm');
+    const inquiryForm = document.getElementById('inquiryForm');
     
-    if (productInquiryForm) {
+    if (inquiryForm) {
         // Show/hide the "other product" field based on selection
         const productSelect = document.getElementById('product');
         const otherProductGroup = document.getElementById('otherProductGroup');
@@ -106,7 +106,7 @@ document.addEventListener('DOMContentLoaded', function() {
         });
 
         // Form validation and submission
-        productInquiryForm.addEventListener('submit', function(e) {
+        inquiryForm.addEventListener('submit', function(e) {
             e.preventDefault();
             
             // Reset error messages
@@ -169,37 +169,24 @@ document.addEventListener('DOMContentLoaded', function() {
                 isValid = false;
             }
             
-            // If form is valid, submit it
+            // If form is valid, redirect to WhatsApp
             if (isValid) {
-                // Prepare form data for email
-                const formData = {
-                    name: name,
-                    company: company,
-                    email: email,
-                    phone: phone,
-                    product: product === 'Other' ? otherProduct : product,
-                    message: message
-                };
+                // Format the product name
+                const productName = product === 'Other' ? otherProduct : product;
                 
-                // Send email using EmailJS
-                emailjs.send('default_service', 'template_watfix', {
-                    from_name: formData.name,
-                    company: formData.company,
-                    reply_to: formData.email,
-                    phone: formData.phone,
-                    product: formData.product,
-                    message: formData.message,
-                    to_email: 'watfixchemicals@gmail.com'
-                })
-                .then(function(response) {
-                    console.log('SUCCESS!', response.status, response.text);
-                    // Show success message
-                    productInquiryForm.innerHTML = '<div class="success-message"><h3>Thank you for your inquiry!</h3><p>We have received your message and will get back to you shortly.</p></div>';
-                }, function(error) {
-                    console.log('FAILED...', error);
-                    // Show error message
-                    alert('There was an error sending your message. Please try again later or contact us directly at watfixchemicals@gmail.com');
-                });
+                // Create WhatsApp message text
+                const whatsappText = `*New Inquiry from WatFix Chemicals Website*%0A%0A*Name:* ${name}%0A*Company:* ${company}%0A*Email:* ${email}%0A*Phone:* ${phone}%0A*Product Interest:* ${productName}%0A%0A*Message:*%0A${message}`;
+                
+                // Create WhatsApp URL with the phone number and message
+                const whatsappUrl = `https://wa.me/918076419279?text=${whatsappText}`;
+                
+                // Show success message before redirecting
+                inquiryForm.innerHTML = '<div class="success-message"><h3>Thank you for your inquiry!</h3><p>Redirecting you to WhatsApp to complete your request...</p></div>';
+                
+                // Redirect to WhatsApp after a short delay (1.5 seconds)
+                setTimeout(function() {
+                    window.open(whatsappUrl, '_blank');
+                }, 1500);
             }
         });
     }
