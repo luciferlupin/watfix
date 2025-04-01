@@ -232,9 +232,14 @@ ${message}`;
     
     // Function to open modal
     function openModal(modalId) {
+        console.log("Opening modal:", modalId); // Debug log
         modalContainer.classList.add('active');
-        document.body.style.overflow = 'hidden'; // Prevent scrolling
-        document.body.style.position = 'fixed'; // Prevent mobile scrolling
+        
+        // Store the current scroll position
+        const scrollY = window.scrollY;
+        document.body.style.top = `-${scrollY}px`;
+        document.body.style.overflow = 'hidden';
+        document.body.style.position = 'fixed';
         document.body.style.width = '100%';
         
         // Hide all modals first
@@ -246,15 +251,22 @@ ${message}`;
         const modal = document.getElementById(modalId);
         if (modal) {
             modal.classList.add('active');
+        } else {
+            console.error("Modal not found:", modalId); // Debug log
         }
     }
     
     // Function to close all modals
     function closeModals() {
         modalContainer.classList.remove('active');
-        document.body.style.overflow = ''; // Restore scrolling
-        document.body.style.position = ''; // Restore position
+        
+        // Restore scroll position
+        const scrollY = parseInt(document.body.style.top || '0') * -1;
+        document.body.style.overflow = '';
+        document.body.style.position = '';
         document.body.style.width = '';
+        document.body.style.top = '';
+        window.scrollTo(0, scrollY);
         
         modals.forEach(modal => {
             modal.classList.remove('active');
@@ -262,34 +274,36 @@ ${message}`;
     }
     
     // Event listener for product links
-    productLinks.forEach(link => {
-        link.addEventListener('click', function(e) {
-            e.preventDefault();
-            const modalId = this.getAttribute('href').substring(1); // Remove the # from href
-            openModal(modalId);
+    if (productLinks.length > 0) {
+        productLinks.forEach(link => {
+            link.addEventListener('click', function(e) {
+                e.preventDefault();
+                const modalId = this.getAttribute('href').substring(1); // Remove the # from href
+                console.log("Link clicked for modal:", modalId); // Debug log
+                openModal(modalId);
+            });
         });
-    });
+    } else {
+        console.error("No product links found with class 'learn-more'"); // Debug log
+    }
     
     // Event listener for close buttons
-    closeButtons.forEach(button => {
-        button.addEventListener('click', closeModals);
-    });
+    if (closeButtons.length > 0) {
+        closeButtons.forEach(button => {
+            button.addEventListener('click', closeModals);
+        });
+    }
     
     // Close modal when clicking on overlay
-    modalOverlay.addEventListener('click', closeModals);
+    if (modalOverlay) {
+        modalOverlay.addEventListener('click', closeModals);
+    }
     
-    // Close modal when pressing Escape key
+    // Close modal with Escape key
     document.addEventListener('keydown', function(e) {
-        if (e.key === 'Escape') {
+        if (e.key === 'Escape' && modalContainer.classList.contains('active')) {
             closeModals();
         }
-    });
-    
-    // Prevent closing when clicking inside modal content
-    modals.forEach(modal => {
-        modal.addEventListener('click', function(e) {
-            e.stopPropagation();
-        });
     });
     
     // Handle "Request Quote" button in modals
