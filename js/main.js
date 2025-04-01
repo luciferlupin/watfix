@@ -180,6 +180,109 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     }
 
+    // Modal functionality
+    const modalContainer = document.getElementById('modalContainer');
+    const modalOverlay = document.querySelector('.modal-overlay');
+    const modals = document.querySelectorAll('.modal');
+    const closeButtons = document.querySelectorAll('.modal-close');
+    const productLinks = document.querySelectorAll('.learn-more[href^="#modal-"]');
+    
+    // Function to open modal
+    function openModal(modalId) {
+        modalContainer.classList.add('active');
+        document.body.style.overflow = 'hidden'; // Prevent scrolling
+        
+        // Hide all modals first
+        modals.forEach(modal => {
+            modal.classList.remove('active');
+        });
+        
+        // Show the selected modal
+        const modal = document.getElementById(modalId);
+        if (modal) {
+            modal.classList.add('active');
+        }
+    }
+    
+    // Function to close all modals
+    function closeModals() {
+        modalContainer.classList.remove('active');
+        document.body.style.overflow = ''; // Restore scrolling
+        
+        modals.forEach(modal => {
+            modal.classList.remove('active');
+        });
+    }
+    
+    // Event listener for product links
+    productLinks.forEach(link => {
+        link.addEventListener('click', function(e) {
+            e.preventDefault();
+            const modalId = this.getAttribute('href').substring(1); // Remove the # from href
+            openModal(modalId);
+        });
+    });
+    
+    // Event listener for close buttons
+    closeButtons.forEach(button => {
+        button.addEventListener('click', closeModals);
+    });
+    
+    // Close modal when clicking on overlay
+    modalOverlay.addEventListener('click', closeModals);
+    
+    // Close modal when pressing Escape key
+    document.addEventListener('keydown', function(e) {
+        if (e.key === 'Escape') {
+            closeModals();
+        }
+    });
+    
+    // Prevent closing when clicking inside modal content
+    modals.forEach(modal => {
+        modal.addEventListener('click', function(e) {
+            e.stopPropagation();
+        });
+    });
+    
+    // Handle "Request Quote" button in modals
+    const modalCtaButtons = document.querySelectorAll('.modal-cta');
+    modalCtaButtons.forEach(button => {
+        button.addEventListener('click', function(e) {
+            e.preventDefault();
+            
+            // Get the product name from the modal title
+            const modalTitle = this.closest('.modal').querySelector('.modal-header h2').textContent;
+            
+            // Close the modal
+            closeModals();
+            
+            // Scroll to contact form
+            const contactSection = document.getElementById('contact');
+            contactSection.scrollIntoView({ behavior: 'smooth' });
+            
+            // Set the product dropdown to the selected product
+            setTimeout(() => {
+                const productDropdown = document.getElementById('product');
+                
+                // Find the option that matches the modal title
+                for (let i = 0; i < productDropdown.options.length; i++) {
+                    if (productDropdown.options[i].text === modalTitle) {
+                        productDropdown.selectedIndex = i;
+                        
+                        // Trigger change event to handle any dependent fields
+                        const event = new Event('change');
+                        productDropdown.dispatchEvent(event);
+                        break;
+                    }
+                }
+                
+                // Focus on the name field
+                document.getElementById('name').focus();
+            }, 800);
+        });
+    });
+
     // Add error class styling
     const style = document.createElement('style');
     style.textContent = `
