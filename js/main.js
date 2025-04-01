@@ -64,7 +64,7 @@ document.addEventListener('DOMContentLoaded', function() {
     });
 
     // Product Inquiry Form Handling
-    const inquiryForm = document.getElementById('inquiryForm');
+    const inquiryForm = document.getElementById('productInquiryForm');
     
     if (inquiryForm) {
         // Show/hide the "other product" field based on selection
