@@ -234,6 +234,8 @@ ${message}`;
     function openModal(modalId) {
         modalContainer.classList.add('active');
         document.body.style.overflow = 'hidden'; // Prevent scrolling
+        document.body.style.position = 'fixed'; // Prevent mobile scrolling
+        document.body.style.width = '100%';
         
         // Hide all modals first
         modals.forEach(modal => {
@@ -251,6 +253,8 @@ ${message}`;
     function closeModals() {
         modalContainer.classList.remove('active');
         document.body.style.overflow = ''; // Restore scrolling
+        document.body.style.position = ''; // Restore position
+        document.body.style.width = '';
         
         modals.forEach(modal => {
             modal.classList.remove('active');
