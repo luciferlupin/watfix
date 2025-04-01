@@ -713,6 +713,7 @@ input:focus:invalid, select:focus:invalid, textarea:focus:invalid {
     width: 100%;
     max-height: 300px;
     overflow: hidden;
+    display: none;
 }
 
 .modal-image img {
@@ -723,6 +724,7 @@ input:focus:invalid, select:focus:invalid, textarea:focus:invalid {
 
 .modal-content {
     padding: 20px;
+    width: 100%;
 }
 
 .modal-content h3 {
@@ -764,17 +766,18 @@ input:focus:invalid, select:focus:invalid, textarea:focus:invalid {
 /* Responsive Modal */
 @media (min-width: 768px) {
     .modal-body {
-        flex-direction: row;
+        flex-direction: column;
     }
     
     .modal-image {
-        width: 40%;
+        width: 100%;
         max-height: none;
         height: auto;
+        display: none;
     }
     
     .modal-content {
-        width: 60%;
+        width: 100%;
     }
 }
 
@@ -859,12 +862,45 @@ footer {
 .footer-contact p {
     margin-bottom: 10px;
     display: flex;
-    align-items: center;
+    align-items: flex-start;
 }
 
 .footer-contact i {
     margin-right: 10px;
     color: var(--accent-color);
+    margin-top: 4px;
+}
+
+.address-container {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    margin-bottom: 15px;
+}
+
+.address-block {
+    margin-bottom: 5px;
+}
+
+.address-block p {
+    margin-bottom: 5px;
+}
+
+.address-details {
+    padding-left: 24px;
+    line-height: 1.4;
+    opacity: 0.9;
+}
+
+@media (min-width: 768px) {
+    .address-container {
+        flex-direction: row;
+        gap: 30px;
+    }
+    
+    .address-block {
+        flex: 1;
+    }
 }
 
 .footer-bottom {
