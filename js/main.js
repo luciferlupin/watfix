@@ -109,75 +109,105 @@ document.addEventListener('DOMContentLoaded', function() {
         productInquiryForm.addEventListener('submit', function(e) {
             e.preventDefault();
             
-            // Basic validation
-            const name = document.getElementById('name');
-            const email = document.getElementById('email');
-            const phone = document.getElementById('phone');
-            const product = document.getElementById('product');
-            
-            let isValid = true;
-            
-            // Reset previous error states
-            const formGroups = document.querySelectorAll('.form-group');
-            formGroups.forEach(group => {
-                group.classList.remove('error');
+            // Reset error messages
+            const errorElements = document.querySelectorAll('.error-message');
+            errorElements.forEach(element => {
+                element.textContent = '';
             });
             
-            // Name validation
-            if (!name.value.trim()) {
-                isValid = false;
-                name.closest('.form-group').classList.add('error');
+            // Get form values
+            const name = document.getElementById('name').value.trim();
+            const company = document.getElementById('company').value.trim();
+            const email = document.getElementById('email').value.trim();
+            const phone = document.getElementById('phone').value.trim();
+            const product = document.getElementById('product').value;
+            const message = document.getElementById('message').value.trim();
+            let otherProduct = '';
+            
+            if (product === 'Other') {
+                otherProduct = document.getElementById('otherProduct').value.trim();
             }
             
-            // Email validation
-            const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-            if (!email.value.trim() || !emailRegex.test(email.value.trim())) {
+            // Validate form
+            let isValid = true;
+            
+            if (name === '') {
+                document.getElementById('name-error').textContent = 'Please enter your name';
                 isValid = false;
-                email.closest('.form-group').classList.add('error');
             }
             
-            // Phone validation (optional but must be valid if provided)
-            if (phone.value.trim() && !/^[0-9+\-\s()]{7,20}$/.test(phone.value.trim())) {
+            if (company === '') {
+                document.getElementById('company-error').textContent = 'Please enter your company name';
                 isValid = false;
-                phone.closest('.form-group').classList.add('error');
             }
             
-            // Product validation
-            if (product.value === "") {
+            if (email === '') {
+                document.getElementById('email-error').textContent = 'Please enter your email';
                 isValid = false;
-                product.closest('.form-group').classList.add('error');
+            } else if (!isValidEmail(email)) {
+                document.getElementById('email-error').textContent = 'Please enter a valid email';
+                isValid = false;
             }
             
+            if (phone === '') {
+                document.getElementById('phone-error').textContent = 'Please enter your phone number';
+                isValid = false;
+            }
+            
+            if (product === '') {
+                document.getElementById('product-error').textContent = 'Please select a product';
+                isValid = false;
+            }
+            
+            if (product === 'Other' && otherProduct === '') {
+                document.getElementById('otherProduct-error').textContent = 'Please provide product details';
+                isValid = false;
+            }
+            
+            if (message === '') {
+                document.getElementById('message-error').textContent = 'Please enter your message';
+                isValid = false;
+            }
+            
+            // If form is valid, submit it
             if (isValid) {
-                // In a real-world scenario, you would send this data to a server
-                // For demo purposes, we'll just show a success message
+                // Prepare form data for email
+                const formData = {
+                    name: name,
+                    company: company,
+                    email: email,
+                    phone: phone,
+                    product: product === 'Other' ? otherProduct : product,
+                    message: message
+                };
                 
-                // Hide the form
-                productInquiryForm.style.display = 'none';
-                
-                // Create and show success message
-                const successMessage = document.createElement('div');
-                successMessage.className = 'success-message';
-                successMessage.innerHTML = `
-                    <i class="fas fa-check-circle"></i>
-                    <h3>Thank You!</h3>
-                    <p>Your inquiry has been submitted successfully. Our team will contact you shortly.</p>
-                    <button class="btn" id="newInquiryBtn">Submit Another Inquiry</button>
-                `;
-                
-                productInquiryForm.parentNode.appendChild(successMessage);
-                
-                // Add event listener to the "Submit Another Inquiry" button
-                document.getElementById('newInquiryBtn').addEventListener('click', function() {
-                    // Remove success message
-                    successMessage.remove();
-                    
-                    // Reset and show the form
-                    productInquiryForm.reset();
-                    productInquiryForm.style.display = 'block';
+                // Send email using EmailJS
+                emailjs.send('default_service', 'template_watfix', {
+                    from_name: formData.name,
+                    company: formData.company,
+                    reply_to: formData.email,
+                    phone: formData.phone,
+                    product: formData.product,
+                    message: formData.message,
+                    to_email: 'watfixchemicals@gmail.com'
+                })
+                .then(function(response) {
+                    console.log('SUCCESS!', response.status, response.text);
+                    // Show success message
+                    productInquiryForm.innerHTML = '<div class="success-message"><h3>Thank you for your inquiry!</h3><p>We have received your message and will get back to you shortly.</p></div>';
+                }, function(error) {
+                    console.log('FAILED...', error);
+                    // Show error message
+                    alert('There was an error sending your message. Please try again later or contact us directly at watfixchemicals@gmail.com');
                 });
             }
         });
+    }
+    
+    // Email validation function
+    function isValidEmail(email) {
+        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+        return emailRegex.test(email);
     }
 
     // Modal functionality
