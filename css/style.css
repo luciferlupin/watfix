@@ -102,23 +102,28 @@ header {
     top: 0;
     left: 0;
     width: 100%;
-    background: rgba(255, 255, 255, 0.95);
+    background: rgba(255, 255, 255, 0.98);
     box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
     z-index: 1000;
     transition: var(--transition);
     backdrop-filter: blur(10px);
-    height: 80px; /* Fixed height for header */
+    height: 70px; /* Reduced height */
 }
 
 header .container {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding: 10px 15px;
     height: 100%;
+    padding: 0 15px;
 }
 
 /* Logo Styling */
+.logo {
+    display: flex;
+    align-items: center;
+}
+
 .logo a {
     display: flex;
     align-items: center;
@@ -126,14 +131,14 @@ header .container {
 }
 
 .logo img {
-    max-height: 50px;
+    max-height: 40px; /* Smaller logo */
     width: auto;
     display: block;
     margin-right: 10px;
 }
 
 .logo h1 {
-    font-size: 24px;
+    font-size: 20px; /* Smaller text */
     font-weight: 700;
     color: var(--primary-color);
     margin: 0;
@@ -143,23 +148,31 @@ header .container {
     color: var(--secondary-color);
 }
 
+/* Navigation */
+nav {
+    display: flex;
+    align-items: center;
+}
+
 .nav-links {
     display: flex;
     list-style: none;
     align-items: center;
-    height: 100%;
     margin: 0;
+    padding: 0;
 }
 
 .nav-links li {
-    margin-left: 25px;
+    margin-left: 20px; /* Reduced spacing */
 }
 
 .nav-links a {
     color: var(--dark-gray);
     text-decoration: none;
     font-weight: 500;
+    font-size: 15px; /* Smaller font */
     transition: var(--transition);
+    padding: 5px 0;
     position: relative;
 }
 
@@ -171,7 +184,7 @@ header .container {
 .nav-links a::after {
     content: '';
     position: absolute;
-    bottom: -5px;
+    bottom: 0;
     left: 0;
     width: 0;
     height: 2px;
