@@ -6,11 +6,17 @@ const path = require('path');
 // Image URLs from Unsplash, Pexels, and Pixabay (all free for commercial use)
 const imageUrls = {
     'hero-image.png': 'https://images.unsplash.com/photo-1611921561569-0dc52d4253d6?q=80&w=1200&auto=format&fit=crop',  // Water treatment facility
-    'about-image.jpg': 'https://images.unsplash.com/photo-1597773150796-e5c14ebecbf5?q=80&w=800&auto=format&fit=crop',  // Lab scientist working with chemicals
-    'gallery-1.jpg': 'https://images.unsplash.com/photo-1617900906639-cab7adceb499?q=80&w=600&auto=format&fit=crop',    // Industrial water treatment tanks
-    'gallery-2.jpg': 'https://images.pexels.com/photos/2308893/pexels-photo-2308893.jpeg?w=600&auto=compress',          // Laboratory with chemicals
-    'gallery-3.jpg': 'https://images.unsplash.com/photo-1581093196277-9f608bb3b669?q=80&w=600&auto=format&fit=crop',    // Water treatment chemicals
-    'gallery-4.jpg': 'https://images.pexels.com/photos/2280571/pexels-photo-2280571.jpeg?w=600&auto=compress'           // Industrial facility
+    'about-image.jpg': 'https://images.unsplash.com/photo-1597773150796-e5c14ebecbf5?q=80&w=800&auto=format&fit=crop',   // Lab scientist working with chemicals
+    'hedp-60-water-treatment-chemical.jpg': 'https://example.com/hedp-60-water-treatment-chemical.jpg',  // HEDP 60% Water Treatment Chemical
+    'pbtc-phosphonobutane-tricarboxylic-acid-50-500x500.jpg.webp': 'https://example.com/pbtc-phosphonobutane-tricarboxylic-acid-50-500x500.jpg.webp',  // PBTC 50% Water Treatment Chemical
+    'sodium-molybdate-di-hydrate.jpg': 'https://example.com/sodium-molybdate-di-hydrate.jpg',  // Sodium Molybdate Dihydrate
+    'Waste Water Treatment Chemicals.jpg': 'https://example.com/Waste-Water-Treatment-Chemicals.jpg',  // Waste Water Treatment Chemicals
+    'sodium-hexa-meta-phosphate-68--500x500.jpg.webp': 'https://example.com/sodium-hexa-meta-phosphate-68--500x500.jpg.webp',  // Sodium Hexametaphosphate (SHMP)
+    '6576b69aba2bb90184.jpg.webp': 'https://example.com/6576b69aba2bb90184.jpg.webp',  // Benzotriazole
+    'Black White Simple Quote Instagram Post.png': 'https://example.com/Black-White-Simple-Quote-Instagram-Post.png',  // Homopolymer
+    'alack White Simple Quote Instagram Post.png': 'https://example.com/alack-White-Simple-Quote-Instagram-Post.png',  // Co-polymer
+    'lack White Simple Quote Instagram Post.png': 'https://example.com/lack-White-Simple-Quote-Instagram-Post.png',  // Ter-polymer
+    'Beack White Simple Quote Instagram Post.png': 'https://example.com/Beack-White-Simple-Quote-Instagram-Post.png'  // Quad-polymer
 };
 
 // Create images directory if it doesn't exist
