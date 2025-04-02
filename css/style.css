@@ -107,7 +107,7 @@ header {
     z-index: 1000;
     transition: var(--transition);
     backdrop-filter: blur(10px);
-    height: 70px; /* Reduced height */
+    height: 90px; /* Increased height from 70px to 90px */
 }
 
 header .container {
@@ -131,10 +131,10 @@ header .container {
 }
 
 .logo img {
-    height: 45px; /* Adjusted height to be proportional to header */
+    height: 80px; /* Significantly increased height from 65px to 80px */
     width: auto;
     display: block;
-    margin-right: 10px;
+    margin-right: 15px;
     object-fit: contain; /* Ensures the image maintains its aspect ratio */
 }
 
@@ -1153,10 +1153,10 @@ button,
     
     .nav-links {
         position: fixed;
-        top: 70px;
+        top: 90px;
         left: -100%;
         width: 100%;
-        height: calc(100vh - 70px);
+        height: calc(100vh - 90px);
         background: var(--white);
         flex-direction: column;
         align-items: center;
