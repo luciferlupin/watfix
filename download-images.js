@@ -16,7 +16,12 @@ const imageUrls = {
     'Black White Simple Quote Instagram Post.png': 'https://example.com/Black-White-Simple-Quote-Instagram-Post.png',  // Homopolymer
     'alack White Simple Quote Instagram Post.png': 'https://example.com/alack-White-Simple-Quote-Instagram-Post.png',  // Co-polymer
     'lack White Simple Quote Instagram Post.png': 'https://example.com/lack-White-Simple-Quote-Instagram-Post.png',  // Ter-polymer
-    'Beack White Simple Quote Instagram Post.png': 'https://example.com/Beack-White-Simple-Quote-Instagram-Post.png'  // Quad-polymer
+    'Beack White Simple Quote Instagram Post.png': 'https://example.com/Beack-White-Simple-Quote-Instagram-Post.png',  // Quad-polymer
+    'etp plant WhatsApp Image 2025-04-02 at 14.10.08.jpeg': 'https://example.com/etp-plant-WhatsApp-Image-2025-04-02-at-14.10.08.jpeg',  // ETP Plant
+    'zld plant WhatsApp Image 2025-04-02 at 14.10.55.jpeg': 'https://example.com/zld-plant-WhatsApp-Image-2025-04-02-at-14.10.55.jpeg',  // ZLD Plant
+    'ro plant WhatsApp Image 2025-04-02 at 14.11.40.jpeg': 'https://example.com/ro-plant-WhatsApp-Image-2025-04-02-at-14.11.40.jpeg',  // RO Plant
+    'sewage-treatment-plant-stp.png': 'https://example.com/sewage-treatment-plant-stp.png',  // STP Plant
+    'mf-water-treatment-plant-500x500.jpg.webp': 'https://example.com/mf-water-treatment-plant-500x500.jpg.webp'  // Ultra and Nano Filtration Plant
 };
 
 // Create images directory if it doesn't exist

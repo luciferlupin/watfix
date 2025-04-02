@@ -131,10 +131,11 @@ header .container {
 }
 
 .logo img {
-    max-height: 40px; /* Smaller logo */
+    height: 45px; /* Adjusted height to be proportional to header */
     width: auto;
     display: block;
     margin-right: 10px;
+    object-fit: contain; /* Ensures the image maintains its aspect ratio */
 }
 
 .logo h1 {
