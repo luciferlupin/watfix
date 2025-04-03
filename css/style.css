@@ -1361,6 +1361,29 @@ footer {
     opacity: 0.9;
 }
 
+.map-link {
+    display: inline-block;
+    margin-top: 8px;
+    margin-left: 28px;
+    color: var(--accent-color);
+    font-size: 14px;
+    text-decoration: none;
+    transition: var(--transition);
+    background: rgba(255, 255, 255, 0.1);
+    padding: 4px 10px;
+    border-radius: 4px;
+}
+
+.map-link i {
+    margin-right: 5px;
+}
+
+.map-link:hover {
+    background: rgba(255, 255, 255, 0.2);
+    color: var(--white);
+    transform: translateY(-2px);
+}
+
 .footer-bottom {
     border-top: 1px solid rgba(255, 255, 255, 0.1);
     padding-top: 20px;
