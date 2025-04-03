@@ -177,6 +177,15 @@ nav {
     position: relative;
 }
 
+.nav-links a i {
+    font-size: 16px;
+    vertical-align: middle;
+}
+
+.nav-links a:hover i {
+    color: var(--primary-color);
+}
+
 .nav-links a:hover,
 .nav-links a.active {
     color: var(--primary-color);
@@ -539,15 +548,15 @@ nav {
 
 .gallery-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-    gap: 20px;
+    grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+    gap: 25px;
 }
 
 .gallery-item {
     position: relative;
     border-radius: 10px;
     overflow: hidden;
-    height: 250px;
+    height: 320px;
     box-shadow: var(--box-shadow);
 }
 
@@ -1032,14 +1041,10 @@ input:focus:invalid, select:focus:invalid, textarea:focus:invalid {
         align-items: center;
         padding: 16px 20px;
         margin-top: 10px;
-        font-size: 16px;
-        font-weight: 600;
-        border-radius: 6px;
     }
     
     .whatsapp-btn i {
         margin-right: 10px;
-        font-size: 20px;
     }
 }
 
@@ -1063,7 +1068,6 @@ input:focus:invalid, select:focus:invalid, textarea:focus:invalid {
     text-decoration: none;
     transition: all 0.3s ease;
     -webkit-tap-highlight-color: transparent;
-    -webkit-touch-callout: none;
     -webkit-user-select: none;
     user-select: none;
     will-change: transform;
@@ -1237,9 +1241,9 @@ footer {
 }
 
 .footer-logo img {
-    max-width: 50px;
+    max-width: 120px;
     height: auto;
-    margin-bottom: 10px;
+    margin-bottom: 15px;
 }
 
 .footer-logo h2 {
